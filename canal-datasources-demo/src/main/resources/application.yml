@@ -1,0 +1,11 @@
+db:
+  configs:
+    - dbname: live
+      url: jdbc:mysql://172.17.247.115:3306/live?useUnicode=true&characterEncoding=utf-8&useSSL=false&serverTimezone=Asia/Shanghai&allowMultiQueries=true
+      username: root
+      password: 123456
+    - dbname: banner
+      url: jdbc:mysql://172.17.247.115:3306/banner?useUnicode=true&characterEncoding=utf-8&useSSL=false&serverTimezone=Asia/Shanghai&allowMultiQueries=true
+      username: root
+      password: 123456
+
