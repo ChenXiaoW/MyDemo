@@ -1,4 +1,5 @@
 # MyDemo
-## canal - 单数据源
-## canal - 多数据源
-## scheduledthreadpoolexecutor
+- canal - 单对单同步
+- canal - 单对多同步
+- scheduledthreadpoolexecutor - 异步线程池
+- poi-export - Poi导出excel
