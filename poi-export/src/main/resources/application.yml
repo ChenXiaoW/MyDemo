@@ -1,0 +1,22 @@
+
+server:
+  port: 8010
+
+spring:
+  datasource:
+    url: jdbc:mysql://127.0.0.1:3306/big_data_test?useUnicode=true&characterEncoding=utf-8&useSSL=false&serverTimezone=Asia/Shanghai&allowMultiQueries=true
+    username: root
+    password: 123456
+    driver-class-name: com.mysql.jdbc.Driver
+
+#mybatisplus配置
+mybatis-plus:
+#  global-config:
+#    db-config:
+#      #逻辑删除相关配置
+#      logic-delete-field: deleted  #mybatis-plus 3.3.0+   配置后可以忽略使用 @TableLogic 注解
+#      logic-delete-value: 1 # 逻辑删除值
+#      logic-not-delete-value: 0 #逻辑未删除值
+  configuration:
+    map-underscore-to-camel-case: true
+  mapper-locations: classpath:/mapper/*.xml
