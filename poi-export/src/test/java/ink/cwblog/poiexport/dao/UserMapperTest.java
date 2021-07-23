@@ -45,6 +45,7 @@ class UserMapperTest {
         userMapper.insert(user);
     }
 
+
     /**
      * 批量Mock数据
      * @throws InterruptedException
@@ -72,6 +73,9 @@ class UserMapperTest {
 
         threadPoolExecutor.shutdown();
     }
+    /**
+     * 测试数据：150w
+     */
 
     /**
      * 无处理
@@ -201,6 +205,63 @@ class UserMapperTest {
         }
         CompletableFuture<Void> voidCompletableFuture = CompletableFuture.allOf(futures.toArray(new CompletableFuture[futures.size()]));
         voidCompletableFuture.join();
+        long endTime = System.currentTimeMillis();
+        System.out.println("结束时间:"+endTime+"   , 花费时间:"+(endTime-beginTime));
+        System.out.println("处理结果"+ JSONArray.toJSONString(paths));
+    }
+
+    /**
+     * 生成单个excel
+     * 耗时：28s377ms
+     *
+     * @throws ExecutionException
+     * @throws InterruptedException
+     * @throws ClassNotFoundException
+     * @throws IllegalAccessException
+     * @throws InstantiationException
+     * @throws IOException
+     */
+    @Test
+    void createExcel5() throws ExecutionException, InterruptedException, ClassNotFoundException, IllegalAccessException, InstantiationException, IOException {
+        long beginTime =  System.currentTimeMillis();
+        System.out.println("开始执行时间:"+beginTime);
+        //获取数据总量
+        Integer count = userMapper.selectCount(Wrappers.lambdaQuery());
+        System.out.println("数据总量:"+count);
+        //阈值 10w
+        Integer thresholdValue = 100000;
+        //计算多少页
+        Integer pageCount = count%thresholdValue == 0? count/thresholdValue : (count/thresholdValue)+1;
+        List<Boolean> paths = new ArrayList<>();
+        List<CompletableFuture<Boolean>> futures = new ArrayList<>();
+        Workbook workbook = (Workbook)Class.forName(ExcelTypeEnums.SXSSF.getClassName()).newInstance();
+        for (int i = 0;i<pageCount;i++){
+
+            int d = i;
+            Sheet sheet = workbook.createSheet(d+"");
+            String limit = "limit "+i*thresholdValue+","+thresholdValue;
+            CompletableFuture<Boolean> stringCompletableFuture = CompletableFuture.supplyAsync(() -> {
+                List<User> users = userMapper.selectList(Wrappers.<User>lambdaQuery().last(limit));
+                return ExcelUtil.createSheet(sheet,users);
+            });
+            futures.add(stringCompletableFuture);
+            paths.add(stringCompletableFuture.get());
+        }
+        CompletableFuture<Void> voidCompletableFuture = CompletableFuture.allOf(futures.toArray(new CompletableFuture[futures.size()]));
+        voidCompletableFuture.join();
+        String fileSavePath = "F:\\idea_project\\MyDemo\\poi-export\\excel"+File.separator+"cw."+ExcelTypeEnums.SXSSF.getSuffix();
+        File file = new File(fileSavePath);
+        if(!file.exists()){
+            if (file.createNewFile()){
+                System.out.println("创建文件成功");
+            }else {
+                System.out.println("创建文件失败");
+            }
+        }
+        FileOutputStream fileOutputStream = new FileOutputStream(file);
+        workbook.write(fileOutputStream);
+        fileOutputStream.flush();
+        fileOutputStream.close();
         long endTime = System.currentTimeMillis();
         System.out.println("结束时间:"+endTime+"   , 花费时间:"+(endTime-beginTime));
         System.out.println("处理结果"+ JSONArray.toJSONString(paths));
