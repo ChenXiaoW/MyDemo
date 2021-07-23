@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="ink.cwblog.poiexport.dao.UserMapper">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="ink.cwblog.poiexport.pojo.User">
+        <id column="id" property="id" />
+        <result column="username" property="username" />
+        <result column="age" property="age" />
+        <result column="tel" property="tel" />
+        <result column="address" property="address" />
+        <result column="detail" property="detail" />
+        <result column="create_time" property="createTime" />
+        <result column="sex" property="sex" />
+        <result column="city" property="city" />
+        <result column="province" property="province" />
+    </resultMap>
+
+    <!-- 通用查询结果列 -->
+    <sql id="Base_Column_List">
+        id, username, age, tel, address, detail, create_time, sex, city, province
+    </sql>
+
+</mapper>
