@@ -19,7 +19,9 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.ExecutionException;
@@ -222,7 +224,7 @@ class UserMapperTest {
      * @throws IOException
      */
     @Test
-    void createExcel5() throws ExecutionException, InterruptedException, ClassNotFoundException, IllegalAccessException, InstantiationException, IOException {
+    void createExcel5(int s) throws ExecutionException, InterruptedException, ClassNotFoundException, IllegalAccessException, InstantiationException, IOException {
         long beginTime =  System.currentTimeMillis();
         System.out.println("开始执行时间:"+beginTime);
         //获取数据总量
@@ -249,7 +251,7 @@ class UserMapperTest {
         }
         CompletableFuture<Void> voidCompletableFuture = CompletableFuture.allOf(futures.toArray(new CompletableFuture[futures.size()]));
         voidCompletableFuture.join();
-        String fileSavePath = "F:\\idea_project\\MyDemo\\poi-export\\excel"+File.separator+"cw."+ExcelTypeEnums.SXSSF.getSuffix();
+        String fileSavePath = "F:\\idea_project\\MyDemo\\poi-export\\excel"+File.separator+"cw"+s+"."+ExcelTypeEnums.SXSSF.getSuffix();
         File file = new File(fileSavePath);
         if(!file.exists()){
             if (file.createNewFile()){
@@ -266,5 +268,31 @@ class UserMapperTest {
         System.out.println("结束时间:"+endTime+"   , 花费时间:"+(endTime-beginTime));
         System.out.println("处理结果"+ JSONArray.toJSONString(paths));
     }
+
+//    @Test
+//    void ed() throws IllegalAccessException, InterruptedException, ExecutionException, InstantiationException, IOException, ClassNotFoundException {
+//        for (int i = 0;i<10;i++){
+//            int d = i;
+//            new Thread(()->{
+//                try {
+//                    createExcel5(d);
+//                } catch (ExecutionException e) {
+//                    e.printStackTrace();
+//                } catch (InterruptedException e) {
+//                    e.printStackTrace();
+//                } catch (ClassNotFoundException e) {
+//                    e.printStackTrace();
+//                } catch (IllegalAccessException e) {
+//                    e.printStackTrace();
+//                } catch (InstantiationException e) {
+//                    e.printStackTrace();
+//                } catch (IOException e) {
+//                    e.printStackTrace();
+//                }
+//            }).start();
+//        }
+//
+//        Thread.sleep(1000000);
+//    }
 
 }
