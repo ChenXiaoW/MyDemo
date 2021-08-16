@@ -1,0 +1,8 @@
+
+study:
+  config:
+    enable: true
+    name: cw
+    age: 25
+server:
+  port: 9091
