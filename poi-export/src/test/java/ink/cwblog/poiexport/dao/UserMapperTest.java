@@ -54,9 +54,10 @@ class UserMapperTest {
      */
     @Test
     void batchInsertTest() throws InterruptedException {
+        int maxNum = 5000000 ;
+
         //mock数据
-        ThreadPoolExecutor threadPoolExecutor = new ThreadPoolExecutor(30,100,30, TimeUnit.SECONDS,new LinkedBlockingQueue<>(1500000));
-       int maxNum = 1500000 ;
+        ThreadPoolExecutor threadPoolExecutor = new ThreadPoolExecutor(30,100,30, TimeUnit.SECONDS,new LinkedBlockingQueue<>(maxNum));
 
         for (int i = 0;i<maxNum;i++){
             int d= i;
