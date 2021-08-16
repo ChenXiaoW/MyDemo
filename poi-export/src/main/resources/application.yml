@@ -9,14 +9,14 @@ spring:
     password: 123456
     driver-class-name: com.mysql.jdbc.Driver
 
-#mybatisplusÅäÖÃ
+#mybatisplusé…ç½®
 mybatis-plus:
-#  global-config:
-#    db-config:
-#      #Âß¼­É¾³ıÏà¹ØÅäÖÃ
-#      logic-delete-field: deleted  #mybatis-plus 3.3.0+   ÅäÖÃºó¿ÉÒÔºöÂÔÊ¹ÓÃ @TableLogic ×¢½â
-#      logic-delete-value: 1 # Âß¼­É¾³ıÖµ
-#      logic-not-delete-value: 0 #Âß¼­Î´É¾³ıÖµ
+  #  global-config:
+  #    db-config:
+  #      #é€»è¾‘åˆ é™¤ç›¸å…³é…ç½®
+  #      logic-delete-field: deleted  #mybatis-plus 3.3.0+   é…ç½®åå¯ä»¥å¿½ç•¥ä½¿ç”¨ @TableLogic æ³¨è§£
+  #      logic-delete-value: 1 # é€»è¾‘åˆ é™¤å€¼
+  #      logic-not-delete-value: 0 #é€»è¾‘æœªåˆ é™¤å€¼
   configuration:
     map-underscore-to-camel-case: true
   mapper-locations: classpath:/mapper/*.xml
