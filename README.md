@@ -1,8 +1,16 @@
 # MyDemo
-- canal - 单对单同步
+- canal - 单对单同步  
+    - canal-demo
 - canal - 单对多同步
-- scheduledthreadpoolexecutor - 异步线程池
-- poi-export - Poi导出excel
+    - canal-datasources-demo
+- 异步线程池
+    - scheduledthreadpoolexecutor-demo
 - 自定义spring 异步任务的自动方式
+    - scheduled
+- Poi导出excel
+    - poi-export
 - 自定义springboot-starter包
+    - my-springboot-starter
+    - my-springboot-starter-test
 - 动态定时任务
+    - springboot-timer
