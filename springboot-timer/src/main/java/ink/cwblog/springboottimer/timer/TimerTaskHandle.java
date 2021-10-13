@@ -40,7 +40,7 @@ public class TimerTaskHandle {
      * 初始化线程池任务调度
      */
     @PostConstruct
-    public void  init(){
+    public void init() {
         this.threadPoolTaskScheduler.setPoolSize(32);
         this.threadPoolTaskScheduler.setThreadNamePrefix("task-thread-");
         this.threadPoolTaskScheduler.setWaitForTasksToCompleteOnShutdown(true);
@@ -52,65 +52,76 @@ public class TimerTaskHandle {
     /**
      * 从数据库中获取所有定时任务
      */
-    private void getAllTaskFromDb(){
+    private void getAllTaskFromDb() {
         List<Task> tasks = taskMapper.selectList(Wrappers.<Task>lambdaQuery().eq(Task::getTaskStatus, 1));
-        if (CollectionUtils.isEmpty(tasks)){
+        if (CollectionUtils.isEmpty(tasks)) {
             log.info("当前不存在可执行的定时任务");
             return;
         }
         tasks.forEach(this::start);
-        log.info("当前定时任务数:{}",tasks.size());
+        log.info("当前定时任务数:{}", tasks.size());
     }
 
     /**
      * 根据定时任务编号，启动定时任务
+     *
      * @param taskNo
      */
-    public void start(String taskNo){
-        Assert.notNull(taskNo,"任务编号不能为空");
+    public void start(String taskNo) {
+        Assert.notNull(taskNo, "任务编号不能为空");
         Task task = taskMapper.selectOne(Wrappers.<Task>lambdaQuery().eq(Task::getTaskNo, taskNo));
-        Assert.notNull(task,"当前任务不存在执行");
-        Assert.isTrue(1 != task.getTaskStatus(),"当前任务已执行");
+        Assert.notNull(task, "当前任务不存在执行");
+        Assert.isTrue(1 != task.getTaskStatus(), "当前任务已执行");
         this.start(task);
     }
 
     /**
      * 根据定时任务详细，启动定时任务
+     *
      * @param task
      */
-    public void start(Task task){
-        Assert.notNull(task,"任务不能为空");
+    public void start(Task task) {
+        Assert.notNull(task, "任务不能为空");
         // 校验是否存在现有任务中，如果存在则先做移除，再做新增
         ScheduledFuture scheduledFuture = TimerTaskHandle.runTasks.get(task.getTaskNo());
-        if(!ObjectUtils.isEmpty(scheduledFuture)){
+        if (!ObjectUtils.isEmpty(scheduledFuture)) {
             this.stop(task.getTaskNo());
         }
         try {
             //获取并实例化Runnable任务类
             Class<?> clazz = Class.forName(task.getTaskClass());
-            Runnable  taskRunner = (Runnable )clazz.newInstance();
+            Runnable taskRunner = (Runnable) clazz.newInstance();
+
+           /*
+            带参
+            Class[] classes = {Integer.class};
+            Object[] objects = {1};
+            Class<?> clazz = Class.forName(task.getTaskClass());
+            Constructor<?> constructor = clazz.getConstructor(classes);
+            Runnable  taskRunner =(Runnable )constructor.newInstance(objects);*/
             //构建cron触发器
             CronTrigger cronTrigger = new CronTrigger(task.getTaskExp());
             //组建任务调度器，并加入到执行任务列表中
-            TimerTaskHandle.runTasks.put(task.getTaskNo(), Objects.requireNonNull(this.threadPoolTaskScheduler.schedule(taskRunner,cronTrigger)));
-            log.info("当前任务[{}]已启动",task.getTaskNo());
-        } catch (ClassNotFoundException | IllegalAccessException | InstantiationException e) {
-            log.error("当前任务[{}]启动失败",task.getTaskNo());
+            TimerTaskHandle.runTasks.put(task.getTaskNo(), Objects.requireNonNull(this.threadPoolTaskScheduler.schedule(taskRunner, cronTrigger)));
+            log.info("当前任务[{}]已启动", task.getTaskNo());
+        } catch (Exception e) {
             e.printStackTrace();
-            throw new RuntimeException("任务启动异常");
         }
+
+
     }
 
     /**
      * 根据定时任务编号,停止定时任务
+     *
      * @param taskNo
      */
-    public void stop(String taskNo){
-        Assert.notNull(taskNo,"任务编号不能为空");
+    public void stop(String taskNo) {
+        Assert.notNull(taskNo, "任务编号不能为空");
         //尝试中断任务
         TimerTaskHandle.runTasks.get(taskNo).cancel(true);
         TimerTaskHandle.runTasks.remove(taskNo);
-        log.info("当前任务[{}]已停止",taskNo);
+        log.info("当前任务[{}]已停止", taskNo);
     }
 
 

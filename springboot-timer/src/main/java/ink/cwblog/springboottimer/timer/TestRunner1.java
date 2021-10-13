@@ -1,6 +1,7 @@
 package ink.cwblog.springboottimer.timer;
 
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.stereotype.Repository;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -13,6 +14,14 @@ import java.util.Date;
  */
 @Slf4j
 public class TestRunner1 implements Runnable {
+
+    private Integer id;
+
+    public TestRunner1(){}
+
+    public TestRunner1(Integer id){
+        this.id = id;
+    }
     /**
      * When an object implementing interface <code>Runnable</code> is used
      * to create a thread, starting the thread causes the object's
@@ -26,6 +35,7 @@ public class TestRunner1 implements Runnable {
      */
     @Override
     public void run() {
+        log.info("id:{}",id);
         log.info("[TestRunner1] => [执行线程] {} => [执行时间] {}",Thread.currentThread().getName(),new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(new Date()));
     }
 }
