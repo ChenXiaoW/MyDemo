@@ -10,5 +10,14 @@
     <version>1.0-SNAPSHOT</version>
     <modules>
         <module>my-springboot-starter</module>
+        <module>canal-demo</module>
+        <module>canal-datasources-demo</module>
+        <module>my-springboot-starter-test</module>
+        <module>poi-export</module>
+        <module>scheduled</module>
+        <module>scheduledthreadpoolexecutor-demo</module>
+        <module>socket-service</module>
+        <module>socket-client</module>
+        <module>springboot-timer</module>
     </modules>
 </project>
