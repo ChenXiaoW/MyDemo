@@ -9,6 +9,7 @@ import lombok.experimental.Accessors;
 
 import java.io.Serializable;
 import java.time.LocalDateTime;
+import java.util.Date;
 
 /**
  * <p>
@@ -36,7 +37,7 @@ public class User {
 
     private String detail;
 
-    private LocalDateTime createTime;
+    private Date createTime;
 
     private String sex;
 

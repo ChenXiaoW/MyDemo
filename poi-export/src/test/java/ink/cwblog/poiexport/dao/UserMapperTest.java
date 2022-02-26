@@ -15,9 +15,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
+import java.util.*;
 import java.util.concurrent.*;
 
 
@@ -53,7 +51,7 @@ class UserMapperTest {
             int d = i;
             threadPoolExecutor.execute(() -> {
                 User user = new User()
-                        .setAddress("布龙路").setCity("深圳").setProvince("广东")
+                        .setAddress("布龙路").setCity("深圳").setProvince("广东").setCreateTime(new Date())
                         .setAge(Integer.valueOf(CommonUtil.generateCode(2))).setUsername(d + "-" + CommonUtil.generateCode(5)).setDetail("第" + d + "个").setSex("男").setTel(d + "");
                 userMapper.insert(user);
             });
@@ -263,30 +261,5 @@ class UserMapperTest {
         System.out.println("处理结果" + JSONArray.toJSONString(paths));
     }
 
-//    @Test
-//    void ed() throws IllegalAccessException, InterruptedException, ExecutionException, InstantiationException, IOException, ClassNotFoundException {
-//        for (int i = 0;i<10;i++){
-//            int d = i;
-//            new Thread(()->{
-//                try {
-//                    createExcel5(d);
-//                } catch (ExecutionException e) {
-//                    e.printStackTrace();
-//                } catch (InterruptedException e) {
-//                    e.printStackTrace();
-//                } catch (ClassNotFoundException e) {
-//                    e.printStackTrace();
-//                } catch (IllegalAccessException e) {
-//                    e.printStackTrace();
-//                } catch (InstantiationException e) {
-//                    e.printStackTrace();
-//                } catch (IOException e) {
-//                    e.printStackTrace();
-//                }
-//            }).start();
-//        }
-//
-//        Thread.sleep(1000000);
-//    }
 
 }
